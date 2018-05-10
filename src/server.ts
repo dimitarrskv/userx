@@ -28,6 +28,7 @@ dotenv.config({ path: '.env.example' });
  * Controllers (route handlers).
  */
 import * as userController from './controllers/user';
+import * as roleController from './controllers/role';
 import * as apiController from './controllers/api';
 
 /**
@@ -135,6 +136,11 @@ app.post('/account/link/instagram',
  */
 app.get('/user/list', userController.authenticate, userController.list);
 app.get('/user/bulk', userController.bulkCreate); // TODO: Remove
+
+app.get('/role/list', userController.authenticate, roleController.list);
+app.get('/role/:id', userController.authenticate, roleController.getById);
+app.post('/role/create', userController.authenticate, roleController.create);
+app.post('/role/update', userController.authenticate, roleController.update);
 
 /**
  * Error Handler. Provides full stack - remove for production

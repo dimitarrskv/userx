@@ -13,6 +13,7 @@ export type UserModel = mongoose.Document & {
   google: String,
 
   tokens: AuthToken[],
+  roles: String[],
 
   profile: {
     name: string,
@@ -27,8 +28,8 @@ export type UserModel = mongoose.Document & {
 };
 
 export type AuthToken = {
-  accessToken: string,
-  kind: string
+  accessToken: String,
+  kind: String
 };
 
 const userSchema = new mongoose.Schema({
@@ -42,6 +43,7 @@ const userSchema = new mongoose.Schema({
   google: String,
 
   tokens: Array,
+  roles : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }],
 
   profile: {
     name: String,
