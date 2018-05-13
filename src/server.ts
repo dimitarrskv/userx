@@ -45,7 +45,6 @@ passport.use(passportConfig.local);
 passport.use(passportConfig.facebook);
 passport.use(passportConfig.instagram);
 passport.use(passportConfig.google);
-passport.use(passportConfig.linkedIn);
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
@@ -111,7 +110,6 @@ app.get('/auth/instagram',
   userController.oAuthlogin,
   userController.generateToken,
   userController.sendToken);
-app.get('/auth/linked-in', passport.authenticate('linkedin-token', {session: false}), userController.oAuthlogin, userController.generateToken, userController.sendToken);
 app.get('/auth/me', userController.authenticate, userController.getCurrentUser, userController.getOne);
 /**
  * API examples routes.

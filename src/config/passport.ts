@@ -4,7 +4,6 @@ import * as passportLocal from 'passport-local';
 import * as FacebookTokenStrategy from 'passport-facebook-token';
 const InstagramTokenStrategy = require('passport-instagram-token');
 const GoogleTokenStrategy = require('passport-google-token').Strategy;
-const LinkedInTokenStrategy = require('passport-linked-in-token').default;
 
 import * as _ from 'lodash';
 
@@ -67,36 +66,5 @@ export let google = new GoogleTokenStrategy({
     done(undefined, {
         accessToken: accessToken,
         profile: profile
-    });
-});
-
-export let linkedIn = new LinkedInTokenStrategy({
-    clientID: process.env.LINKED_IN_ID,
-    clientSecret: process.env.LINKED_IN_SECRET
-}, (accessToken: string, refreshToken: string, profile: any, done: any) => {
-    profile = profile._json;
-
-    User.findOne({ email: profile.email }, (err, existingUser) => {
-        if (err) { return done(err); }
-        if (existingUser) {
-            return done(undefined, existingUser);
-        }
-        User.findOne({ email: profile.email }, (err, existingUser) => {
-            if (err) { return done(err); }
-            if (existingUser) {
-                console.log('existing user');
-                done(err);
-            } else {
-                const user: any = new User();
-                user.email = profile.email;
-                user.google = profile.id;
-                user.tokens.push({ kind: 'linkedIn', accessToken });
-                user.profile.name = profile.name;
-                user.profile.picture = profile.picture;
-                user.save((err: Error) => {
-                    done(err, user);
-                });
-            }
-        });
     });
 });
